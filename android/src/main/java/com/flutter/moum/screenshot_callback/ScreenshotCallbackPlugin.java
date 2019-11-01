@@ -35,29 +35,7 @@ public class ScreenshotCallbackPlugin implements MethodCallHandler {
 
         if (call.method.equals("initialize")) {
             handler = new Handler(Looper.getMainLooper());
-            if (Build.VERSION.SDK_INT >= 29) {
-                Log.d(TAG, "android x");
-                ArrayList<File> files = new ArrayList<File>();
-                for (Path path : Path.values()) {
-                    files.add(new File(path.getPath()));
-                }
-
-                fileObserver = new FileObserver(files, FileObserver.CREATE) {
-                    @Override
-                    public void onEvent(int event, String path) {
-                        Log.d(TAG, "androidX onEvent");
-                        if (event == FileObserver.CREATE) {
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    channel.invokeMethod("onCallback", null);
-                                }
-                            });
-                        }
-                    }
-                };
-                fileObserver.startWatching();
-            } else {
+            
                 Log.d(TAG, "android others");
                 for (Path path : Path.values()) {
                     Log.d(TAG, "onMethodCall: "+path.getPath());
